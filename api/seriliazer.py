@@ -1,9 +1,18 @@
 import imp
+from msilib.schema import _Validation_records
+from wsgiref.validate import validator
 from rest_framework import serializers
 from .models import Student
 
+
+# validators
+
+def start_with_s(value):
+    if value[0].lower() != 's':
+        raise serializers.ValidationError('Name Should be start with S')
+
 class StudentSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=50)
+    name = serializers.CharField(max_length=50, validators=[start_with_s])
     city = serializers.CharField(max_length=50)
     rollNo = serializers.IntegerField()
 
